@@ -122,7 +122,6 @@ function toggleMute() {
 
 
 function draw() {
-  // Pozadie reagujúce na myš
   let hueValue = map(mouseX, 0, width, 60, 160);
   let brightness = map(mouseY, 0, height, 95, 30);
   background(hueValue, 40, brightness);
@@ -134,11 +133,6 @@ function draw() {
   if (introActive) {
     drawIntro();
     return;
-    if (!particlesStarted && !introActive && showVizitka) {
-  startSpawningParticles();
-  particlesStarted = true;
-}
-
   }
 
   for (let p of particles) {
@@ -148,45 +142,29 @@ function draw() {
 
   let center = createVector(width / 2, height / 2);
   let radius = min(width, height) * 0.33;
-  let t = frameCount * 0.01;
 
-  if (!particlesStarted && !introActive && showVizitka) {
-  for (let i = 0; i < 120; i++) {
-  //  particles.push(new Particle());
+  if (!particlesStarted && showVizitka) {
+    startSpawningParticles();
+    particlesStarted = true;
   }
-  particlesStarted = true;
-}
-if (particlesStarted) {
-  for (let p of particles) {
-    p.update();
-    p.display();
+
+  let minDist = Infinity;
+  for (let pos of positions) {
+    let d = dist(mouseX, mouseY, pos.x, pos.y);
+    if (d < minDist) minDist = d;
   }
-}
 
-  // Dynamické spomalenie rotácie
-let minDist = Infinity;
-for (let pos of positions) {
-  let d = dist(mouseX, mouseY, pos.x, pos.y);
-  if (d < minDist) minDist = d;
-}
+  let rotSpeed = map(minDist, 0, 60, 0, angleSpeed);
+  rotSpeed = constrain(rotSpeed, 0, angleSpeed);
+  angleOffset += rotSpeed;
 
-let maxStopDist = 60;
-let rotSpeed = map(minDist, 0, maxStopDist, 0, angleSpeed);
-rotSpeed = constrain(rotSpeed, 0, angleSpeed);
-angleOffset += rotSpeed;
+  let dx = mouseX - center.x;
+  let dy = mouseY - center.y;
+  let offsetVec = createVector(dx, dy).limit(20);
+  smoothedOffsetX = lerp(smoothedOffsetX, offsetVec.x, 0.05);
+  smoothedOffsetY = lerp(smoothedOffsetY, offsetVec.y, 0.05);
 
-
-  // Pomalé sledovanie myši, ak je blízko
-let dx = mouseX - center.x;
-let dy = mouseY - center.y;
-
-let tiltMagnitude = 20;
-let offsetVec = createVector(dx, dy).limit(tiltMagnitude);
-
-smoothedOffsetX = lerp(smoothedOffsetX, offsetVec.x, 0.05);
-smoothedOffsetY = lerp(smoothedOffsetY, offsetVec.y, 0.05);
-
-
+  let anyHovered = false;
   positions = [];
 
   for (let i = 0; i < links.length; i++) {
@@ -196,6 +174,7 @@ smoothedOffsetY = lerp(smoothedOffsetY, offsetVec.y, 0.05);
 
     let d = dist(mouseX, mouseY, baseX, baseY);
     let isHovered = d < 80;
+    if (isHovered) anyHovered = true;
 
     let attractStrength = map(d, 0, 80, 12, 0);
     let magnetX = lerp(baseX, mouseX, constrain(attractStrength / 100, 0, 0.3));
@@ -204,7 +183,13 @@ smoothedOffsetY = lerp(smoothedOffsetY, offsetVec.y, 0.05);
     let size = isHovered ? 32 + sin(frameCount * 0.2 + i) * 4 : 26;
     textSize(size);
 
-    fill(0, 0, 100, isHovered ? 100 : 70);
+    // ŽIARA (glow)
+    for (let g = 5; g > 0; g--) {
+      fill(255, 255 * 0.06 * g);
+      text(links[i].label, magnetX, magnetY);
+    }
+
+    fill(255);
     text(links[i].label, magnetX, magnetY);
 
     positions.push({ x: magnetX, y: magnetY, w: textWidth(links[i].label), h: size, url: links[i].url });
@@ -219,37 +204,11 @@ smoothedOffsetY = lerp(smoothedOffsetY, offsetVec.y, 0.05);
     noStroke();
   }
 
+  cursor(anyHovered ? HAND : ARROW);
+
   fill(255, 90);
   textSize(16);
   text("© Hybe Barn", width / 2, height - 24);
-  for (let i = 0; i < links.length; i++) {
-  let angle = TWO_PI * i / links.length + angleOffset;
-  let baseX = cos(angle) * radius + center.x + smoothedOffsetX;
-  let baseY = sin(angle) * radius + center.y + smoothedOffsetY;
-
-  let d = dist(mouseX, mouseY, baseX, baseY);
-  let isHovered = d < 80;
-
-  let attractStrength = map(d, 0, 80, 12, 0);
-  let magnetX = lerp(baseX, mouseX, constrain(attractStrength / 100, 0, 0.3));
-  let magnetY = lerp(baseY, mouseY, constrain(attractStrength / 100, 0, 0.3));
-
-  let size = isHovered ? 32 + sin(frameCount * 0.2 + i) * 4 : 26;
-  textSize(size);
-
-  // ŽIARA za textom (glow)
-  for (let g = 5; g > 0; g--) {
-    fill(255, 255 * 0.06 * g);
-    text(links[i].label, magnetX, magnetY);
-  }
-
-  fill(255);
-  text(links[i].label, magnetX, magnetY);
-
-  positions.push({ x: magnetX, y: magnetY, w: textWidth(links[i].label), h: size, url: links[i].url });
-}
-
-
 }
 
 function startParticleSpawn() {
