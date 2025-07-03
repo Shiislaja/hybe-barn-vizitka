@@ -216,7 +216,7 @@ function draw() {
     textSize(160);
     text("HYBE BARN", width / 2, height / 2);
   }
-} // ← táto uzatvára funkciu draw!
+}
 
 function drawIntro() {
   for (let pt of introPoints) {
@@ -269,8 +269,8 @@ function drawIntro() {
 
 if (introFinished && !introFadeOut && !introExploding) {
   introFadeOut = true;
+  }
 }
-
 function startParticleSpawn() {
   let spawned = 0;
   particleSpawnInterval = setInterval(() => {
