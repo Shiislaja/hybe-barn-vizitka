@@ -213,7 +213,7 @@ function draw() {
   textSize(160);
   text("HYBE BARN", width / 2, height / 2);
 }
-
+}
 function drawIntro() {
   for (let pt of introPoints) {
     if (introExploding) {
