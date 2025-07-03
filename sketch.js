@@ -193,7 +193,7 @@ function draw() {
     noStroke();
   }
 
-   cursor(anyHovered ? "pointer" : "default");
+  cursor(anyHovered ? "pointer" : "default");
 
   fill(255, 90);
   textSize(16);
@@ -208,12 +208,11 @@ function draw() {
       noStroke();
       ellipse(pt.x, pt.y, 2, 2);
     }
-
     fill(255, 50);
     textSize(160);
     text("HYBE BARN", width / 2, height / 2);
   }
-}
+} // ← táto uzatvára funkciu draw!
 
 function drawIntro() {
   for (let pt of introPoints) {
