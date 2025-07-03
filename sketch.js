@@ -101,11 +101,7 @@ function setup() {
   volumeSlider.position(90, 25);
   volumeSlider.style("width", "80px");
   volumeSlider.style("background", "white");
-
-  introActive = false;
-  showVizitka = true;
 }
-
 
 function toggleMute() {
   if (muted) {
