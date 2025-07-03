@@ -101,7 +101,11 @@ function setup() {
   volumeSlider.position(90, 25);
   volumeSlider.style("width", "80px");
   volumeSlider.style("background", "white");
+
+  introActive = false;
+  showVizitka = true;
 }
+
 
 function toggleMute() {
   if (muted) {
@@ -251,17 +255,20 @@ function drawIntro() {
     introFinished = true;
   }
 
-  if (introFadeOut) {
-    introAlpha -= fadeOutSpeed;
-    if (introAlpha <= 0) {
-      introActive = false;
-      showVizitka = true;
-      if (!particlesStarted) {
-        startParticleSpawn();
-        particlesStarted = true;
-      }
+ if (introFadeOut) {
+  introAlpha -= fadeOutSpeed;
+  if (introAlpha <= 0) {
+    introActive = false;
+    showVizitka = true;
+    if (!particlesStarted) {
+      startParticleSpawn();
+      particlesStarted = true;
     }
   }
+}
+
+if (introFinished && !introFadeOut && !introExploding) {
+  introFadeOut = true;
 }
 
 function startParticleSpawn() {
