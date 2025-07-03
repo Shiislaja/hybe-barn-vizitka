@@ -201,6 +201,9 @@ function draw() {
   
   if (!introActive && showVizitka) {
   for (let pt of introPoints) {
+    pt.x += random(-0.5, 0.5);
+    pt.y += random(-0.5, 0.5);
+
     fill(255, map(sin(frameCount * 0.05), -1, 1, 20, 60));
     noStroke();
     ellipse(pt.x, pt.y, 2, 2);
