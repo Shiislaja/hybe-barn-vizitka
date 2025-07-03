@@ -193,7 +193,7 @@ function draw() {
     noStroke();
   }
 
-    cursor(anyHovered ? "pointer" : "default");
+   cursor(anyHovered ? "pointer" : "default");
 
   fill(255, 90);
   textSize(16);
@@ -207,8 +207,14 @@ function draw() {
       fill(255, map(sin(frameCount * 0.05), -1, 1, 20, 60));
       noStroke();
       ellipse(pt.x, pt.y, 2, 2);
+    }
+
+    fill(255, 50);
+    textSize(160);
+    text("HYBE BARN", width / 2, height / 2);
   }
 }
+
 function drawIntro() {
   for (let pt of introPoints) {
     if (introExploding) {
