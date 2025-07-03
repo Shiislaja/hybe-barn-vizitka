@@ -198,6 +198,14 @@ function draw() {
   fill(255, 90);
   textSize(16);
   text("© Hybe Barn", width / 2, height - 24);
+  
+  if (!introActive && showVizitka) {
+  for (let pt of introPoints) {
+    fill(255, map(sin(frameCount * 0.05), -1, 1, 20, 60));
+    noStroke();
+    ellipse(pt.x, pt.y, 2, 2);
+    
+  }
 }
 
 function drawIntro() {
