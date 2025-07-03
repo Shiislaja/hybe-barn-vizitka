@@ -209,6 +209,9 @@ function draw() {
     ellipse(pt.x, pt.y, 2, 2);
     
   }
+  fill(255, 50);
+  textSize(160);
+  text("HYBE BARN", width / 2, height / 2);
 }
 
 function drawIntro() {
