@@ -193,26 +193,25 @@ function draw() {
     noStroke();
   }
 
-  cursor(anyHovered ? "pointer" : "default");
+    cursor(anyHovered ? "pointer" : "default");
 
   fill(255, 90);
   textSize(16);
   text("© Hybe Barn", width / 2, height - 24);
-  
-  if (!introActive && showVizitka) {
-  for (let pt of introPoints) {
-    pt.x += random(-0.5, 0.5);
-    pt.y += random(-0.5, 0.5);
 
-    fill(255, map(sin(frameCount * 0.05), -1, 1, 20, 60));
-    noStroke();
-    ellipse(pt.x, pt.y, 2, 2);
-    
+  if (!introActive && showVizitka) {
+    for (let pt of introPoints) {
+      pt.x += random(-0.5, 0.5);
+      pt.y += random(-0.5, 0.5);
+
+      fill(255, map(sin(frameCount * 0.05), -1, 1, 20, 60));
+      noStroke();
+      ellipse(pt.x, pt.y, 2, 2);
+    }
+    fill(255, 50);
+    textSize(160);
+    text("HYBE BARN", width / 2, height / 2);
   }
-  fill(255, 50);
-  textSize(160);
-  text("HYBE BARN", width / 2, height / 2);
-}
 }
 function drawIntro() {
   for (let pt of introPoints) {
